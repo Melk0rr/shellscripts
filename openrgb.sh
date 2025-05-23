@@ -31,13 +31,15 @@ Adjust_Wallbash() {
   oldSecondCol="${colors[3]}"
   newSecondCol="${saturated[3]}"
 
-  distance1=$(monet -c "${saturated[0]}" -c "${saturated[3]}" -d)
-  distance2=$(monet -c "${saturated[0]}" -c "${saturated[2]}" -d)
+  distance1=$(monet -c "${saturated[0]}" -c "${saturated[2]}" -d)
+  distance2=$(monet -c "${saturated[0]}" -c "${saturated[3]}" -d)
 
-  if [[ $distance2 > $distance1 ]]; then
+  if [[ $distance1 > $distance2 ]]; then
     oldSecondCol="${colors[2]}"
     newSecondCol="${saturated[2]}"
   fi
+
+  echo "$oldSecondCol" "$newSecondCol"
 
   sed -i "s/${colors[0]}/${saturated[0]:1}/g" "${openrgbCol}"
   sed -i "s/${oldSecondCol}/${newSecondCol:1}/g" "${openrgbCol}"
