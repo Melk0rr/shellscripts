@@ -25,24 +25,27 @@ openrgbCol="$HOME/.config/OpenRGB/colors.conf"
 mapfile -t colors < <(cut -s -f 2 -d @ "${openrgbCol}" | cut -s -f 2 -d :)
 
 Adjust_Wallbash() {
-
   mapfile -t saturated < <(monet $(printf -- "-c %s " "${colors[@]}") -s 1)
-
-  oldSecondCol="${colors[3]}"
-  newSecondCol="${saturated[3]}"
 
   distance1=$(monet -c "${saturated[0]}" -c "${saturated[2]}" -d)
   distance2=$(monet -c "${saturated[0]}" -c "${saturated[3]}" -d)
 
+  replaceIndex=3
   if [[ $distance1 > $distance2 ]]; then
-    oldSecondCol="${colors[2]}"
-    newSecondCol="${saturated[2]}"
+    replaceIndex=2
   fi
 
-  echo "$oldSecondCol" "$newSecondCol"
+  oldSecondCol="${colors[$replaceIndex]}"
+  newSecondCol="${saturated[$replaceIndex]}"
+
+  echo "$oldSecondCol" "${newSecondCol:1}"
 
   sed -i "s/${colors[0]}/${saturated[0]:1}/g" "${openrgbCol}"
   sed -i "s/${oldSecondCol}/${newSecondCol:1}/g" "${openrgbCol}"
+
+  if [[ replaceIndex != 3 ]] ; then
+    sed -i "s/${colors[3]}/${newSecondCol:1}/g" "${openrgbCol}"; sed -i "0,/${newSecondCol:1}/ s/${newSecondCol:1}/${colors[3]}/" "${openrgbCol}"
+  fi
 }
 
 OpenRGB_Wallbash() {
@@ -57,11 +60,6 @@ OpenRGB_Wallbash() {
   fi
 
   openrgbCmd="openrgb"
-
-  if [[ $start == true ]]; then
-    openrgbCmd+=" --startminimized --server"
-  fi
-
   deviceList=("${devices[@]}")
 
   i=0
@@ -94,21 +92,8 @@ OpenRGB_Wallbash() {
     i=$((i + 1))
   done <"$col"
 
-  if [[ $start == false ]]; then
-    openrgbCmd+=" -sp wallbash.orp"
-  fi
-
   echo -e "${openrgbCmd}\n"
   eval "${openrgbCmd}"
-}
-
-OpenRGB_Start() {
-  if [[ $mode == "wallbash" ]]; then
-    OpenRGB_Wallbash
-
-  else
-    openrgb --profile theme.orp
-  fi
 }
 
 ln -fs "${hydeThemeDir}/openrgb.orp" "${confDir}/OpenRGB/theme.orp"
@@ -122,25 +107,10 @@ if [[ $mode != "wallbash" && ! -f $themeProf && ! -f $customCol ]]; then
   mode="wallbash"
 fi
 
-case "${1}" in
-s | -s | --start)
-  start=true
-  OpenRGB_Start
-  ;;
-g | -g | --generate)
-  start=false
+if [[ $mode == "wallbash" ]]; then
+  OpenRGB_Wallbash
 
-  if [[ $mode == "wallbash" ]]; then
-    OpenRGB_Wallbash
+else
+  openrgb --profile theme.orp
+fi
 
-  else
-    openrgb --profile theme.orp
-  fi
-  ;;
-*)
-  echo -e "openrgb.sh [action]"
-  echo "s -s --start     :  start openrgb"
-  echo "g -g --generate  :  generate color conf"
-  exit 1
-  ;;
-esac
