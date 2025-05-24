@@ -5,12 +5,8 @@ source "${scrDir}/globalcontrol.sh"
 
 # If devices were not previously saved into a file : retrieves them
 deviceLst="$HOME/.config/OpenRGB/devices.lst"
-if [[ -f $deviceLst ]] ; then
-  mapfile -t devices < <(cat "$deviceLst")
-else
-  mapfile -t devices < <(openrgb -l | grep '^[0-9]: ')
-  echo "${devices[@]}" > "$deviceLst"
-fi
+mapfile -t devices < <(openrgb -l | grep '^[0-9]: ')
+echo "${devices[@]}" > "$deviceLst"
 
 mode="wallbash"
 openrgbConf="${hydeThemeDir}/openrgb.conf"
