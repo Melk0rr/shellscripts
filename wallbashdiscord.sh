@@ -6,6 +6,8 @@
 scrDir="$(dirname "$(realpath "$0")")"
 source "${scrDir}/globalcontrol.sh"
 discord_col="${cacheDir}/landing/discord.css"
+
+sed -i -e 's/wallbash/accent/g' -e 's/rgba(//g' -e 's/,1)//g' -e 's/_a/_rgb/g' "$discord_col"
 declare -a client_list=()
 
 
