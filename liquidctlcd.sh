@@ -7,6 +7,7 @@ currWpp=$(readlink "${cacheDir}/wall.quad")
 mode="static"
 
 if [[ $currWpp == *"gif"* ]] ; then
+  $currWpp=$(readlink "${cacheDir}/wall.set")
   mode="gif"
 fi
 
