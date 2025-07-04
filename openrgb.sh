@@ -3,10 +3,7 @@
 scrDir="$(dirname "$(realpath "$0")")"
 source "${scrDir}/globalcontrol.sh"
 
-# If devices were not previously saved into a file : retrieves them
-deviceLst="$HOME/.config/OpenRGB/devices.lst"
 mapfile -t devices < <(openrgb -l | grep '^[0-9]: ')
-echo "${devices[@]}" > "$deviceLst"
 
 mode="wallbash"
 openrgbConf="${hydeThemeDir}/openrgb.conf"
@@ -34,12 +31,10 @@ Adjust_Wallbash() {
   oldSecondCol="${colors[$replaceIndex]}"
   newSecondCol="${saturated[$replaceIndex]}"
 
-  echo "$oldSecondCol" "${newSecondCol:1}"
-
   sed -i "s/${colors[0]}/${saturated[0]:1}/g" "${openrgbCol}"
   sed -i "s/${oldSecondCol}/${newSecondCol:1}/g" "${openrgbCol}"
 
-  if [[ replaceIndex != 3 ]] ; then
+  if [[ $replaceIndex != 3 ]] ; then
     sed -i "s/${colors[3]}/${newSecondCol:1}/g" "${openrgbCol}"; sed -i "0,/${newSecondCol:1}/ s/${newSecondCol:1}/${colors[3]}/" "${openrgbCol}"
   fi
 }
