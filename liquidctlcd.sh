@@ -3,7 +3,7 @@
 scrDir="$(dirname "$(realpath "$0")")"
 source "${scrDir}/globalcontrol.sh"
 
-currWpp=$(readlink "${cacheDir}/wall.quad")
+currWpp=$(readlink "${cacheDir}/wall.sqre")
 mode="static"
 
 if [[ $currWpp == *"gif"* ]] ; then
