@@ -1,10 +1,10 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 # set variables
 
-scrDir=`dirname "$(realpath "$0")"`
-source $scrDir/globalcontrol.sh
-roconf="~/.config/rofi/quickapps.rasi"
+scrDir=$(dirname "$(realpath "$0")")
+source "$scrDir"/globalcontrol.sh
+roconf="$HOME/.config/rofi/quickapps.rasi"
 
 if [ $# -eq 0 ] ; then
     echo "usage: ./quickapps.sh <app1> <app2> ... <app[n]>"

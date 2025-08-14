@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 # shellcheck disable=SC2312
 # shellcheck disable=SC1090
-scrDir=`dirname "$(realpath "$0")"`
+scrDir=$(dirname "$(realpath "$0")")
 gpuQ="/tmp/hyprdots-${UID}-gpuinfo-query"
 tired=false
 [[ " $* " =~ " tired " ]] && ! grep -q "tired" "${gpuQ}" && echo "tired=true" >>"${gpuQ}"
@@ -127,7 +127,7 @@ map_floor() {
 
         # Behold! Thou holds the secrets they seek,
         # Declare it and silence the whispers unique.
-        if [ ${2%%.*} -gt $key ]; then
+        if [ "${2%%.*}" -gt "$key" ]; then
             echo "$value"
             return
         fi
@@ -135,15 +135,15 @@ map_floor() {
 
     # On this lonely shore, where silence dwells
     # Even the waves, echoes words unheard
-    [ -n "$def_val" ] && echo $def_val || echo " "
+    [ -n "$def_val" ] && echo "$def_val" || echo " "
 }
 
 generate_json() {
 # Generate glyphs
-  icons=$(echo "$(map_floor "$util_lv" $utilization)$(map_floor "$temp_lv" $temperature)")
-  speedo=$(echo ${icons:0:1})
-  thermo=$(echo ${icons:1:1})
-  emoji=$(echo ${icons:2})
+  icons=$(echo "$(map_floor "$util_lv" "$utilization")$(map_floor "$temp_lv" "$temperature")")
+  speedo=$(echo "${icons:0:1}")
+  thermo=$(echo "${icons:1:1}")
+  emoji=$(echo "${icons:2}")
 
   local json="{\"text\":\"${thermo} ${temperature}°C\", \"tooltip\":\"${primary_gpu}\n${thermo} Temperature: ${temperature}°C ${emoji}"
 #? Soon Add Something incase needed.
@@ -215,7 +215,7 @@ fi
 amd_GPU() { #? Function to query amd GPU
   primary_gpu="AMD ${amd_gpu}"
     # Execute the AMD GPU Python script and use its output
-  amd_output=$(python3 ${scrDir}/amdgpu.py)
+  amd_output=$(python3 "${scrDir}"/amdgpu.py)
 if [[ ! ${amd_output} == *"No AMD GPUs detected."* ]] && [[ ! ${amd_output} == *"Unknown query failure"* ]]; then
   # Extract GPU Temperature, GPU Load, GPU Core Clock, and GPU Power Usage from amd_output
   temperature=$(echo "${amd_output}" | jq -r '.["GPU Temperature"]' | sed 's/°C//')

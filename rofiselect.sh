@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 
 #// set variables
@@ -36,7 +36,7 @@ r_override="window{width:100%;} listview{columns:${col_count};} element{orientat
 
 #// launch rofi menu
 
-RofiSel=$(ls ${rofiStyleDir}/style_*.rasi | awk -F '[_.]' '{print $((NF - 1))}' | while read styleNum
+RofiSel=$(ls "${rofiStyleDir}"/style_*.rasi | awk -F '[_.]' '{print $((NF - 1))}' | while read styleNum
 do
     echo -en "${styleNum}\x00icon\x1f${rofiAssetDir}/style_${styleNum}.png\n"
 done | sort -n | rofi -dmenu -theme-str "${r_override}" -config "${rofiConf}" -select "${rofiStyle}")

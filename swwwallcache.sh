@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 # Script to generate cache files based on given image
 
 #// set variables

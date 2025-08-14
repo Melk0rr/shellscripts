@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 scrDir=$(dirname "$(realpath "$0")")
-source $scrDir/globalcontrol.sh
+source "$scrDir"/globalcontrol.sh
 roConf="${confDir}/rofi/calc.rasi"
 
 enable_package libqalculate

@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # HYDE-CLI
-export CLI_PATH=$(dirname $(dirname ${0}))
+export CLI_PATH=$(dirname $(dirname "${0}"))
 export PATH=$PATH:${CLI_PATH}/lib/hyde-cli/
 
 # Cli Configs
@@ -212,17 +212,17 @@ set_hash()
 }
 
 enable_package() {
-    local Pkg_Dep=$(for PkgIn in "$@"; do ! pkg_installed $PkgIn && echo "$PkgIn"; done)
+    local Pkg_Dep=$(for PkgIn in "$@"; do ! pkg_installed "$PkgIn" && echo "$PkgIn"; done)
     if [[ -n "${Pkg_Dep}" ]]; then
         echo -e "$0 Dependencies:\n$Pkg_Dep"
         get_aurhlpr
         if [ -n "${DISPLAY}" ]; then
             notify-send -a "${0}" "Confirm to install dependencies: '${Pkg_Dep}'" -t 10000
             print_prompt -y "Confirm to install dependencies: '${Pkg_Dep}'"
-            { pkexec --user "${USER}" env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY "${aurhlpr}" -S $Pkg_Dep --noconfirm && notify-send "Installed: ${Pkg_Dep}"; } || { notify-send "Operation Cancelled" && exit 1; }
+            { pkexec --user "${USER}" env DISPLAY="$DISPLAY" XAUTHORITY="$XAUTHORITY" "${aurhlpr}" -S "$Pkg_Dep" --noconfirm && notify-send "Installed: ${Pkg_Dep}"; } || { notify-send "Operation Cancelled" && exit 1; }
         else
             print_prompt -y "Confirm to install dependencies: '${Pkg_Dep}'"
-            { "${aurhlpr}" -S $Pkg_Dep --noconfirm && print_prompt -y "Installed: ${Pkg_Dep}"; } || { print_prompt -r "Operation cancelled" && exit 1; }
+            { "${aurhlpr}" -S "$Pkg_Dep" --noconfirm && print_prompt -y "Installed: ${Pkg_Dep}"; } || { print_prompt -r "Operation cancelled" && exit 1; }
         fi
 
     fi

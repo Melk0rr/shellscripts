@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
 # Check release
 if [ ! -f /etc/arch-release ] ; then

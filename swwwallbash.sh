@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 # Script to run wallbash function and apply colors for every dcol file in hyde/wallbash using first line of each
 
 #// set variables
